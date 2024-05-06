@@ -1,0 +1,26 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    h1= title
+
+    // Check if the item data is available
+    if item
+      div
+        h2 Item Name: #{item.name}
+        p Description: #{item.description}
+        p Category: #{item.category.name} // Assuming category details are populated
+        p Price: $#{item.price.toFixed(2)}
+        p Number in Stock: #{item.numberInStock}
+        if item.URL
+          p URL: 
+            a(href=item.URL) #{item.URL}
+        else
+          p No URL provided.
+        a(href=`/items/${item._id}/delete`) Delete Item
+        br
+        a(href=`/items/${item._id}/update`) Update Item
+    else
+      p No item details available.

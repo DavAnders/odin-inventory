@@ -1,0 +1,23 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    h1= title
+
+    if item
+      div
+        h2 Are you sure you want to delete this item?
+        p Name: #{item.name}
+        p Description: #{item.description}
+        p Price: $#{item.price.toFixed(2)}
+        p Number in Stock: #{item.numberInStock}
+
+        // Form to submit deletion
+        form(action=`/items/${item._id}/delete` method="post")
+          button(type="submit") Delete
+
+        a(href='/items') Cancel
+    else
+      p Item not found or already deleted.

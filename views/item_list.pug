@@ -8,7 +8,8 @@ block content
     ul
       each item in items
         li
-          h2= item.name
+          a(href=`/items/${item._id}`)
+            h2= item.name
           p= item.description
           p= `Price: $${item.price}`
           p= `Number in Stock: ${item.numberInStock}`
@@ -17,6 +18,7 @@ block content
               a(href=item.URL) Visit Website
           else
             p No URL provided.
+          a(href=`/items/${item._id}/update`) Update Item
     
     a(href='./items/create') Create Item
   else

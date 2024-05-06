@@ -67,26 +67,63 @@ exports.item_delete_get = asyncHandler(async (req, res) => {
 
 // Handle item delete on POST.
 exports.item_delete_post = asyncHandler(async (req, res) => {
-  // Delete item
-  // Redirect to item list
+  await Item.findByIdAndDelete(req.params.id);
+  res.redirect("/items");
 });
 
 // Display item update form on GET.
 exports.item_update_get = asyncHandler(async (req, res) => {
   const item = await Item.findById(req.params.id).exec();
+  const categories = await Category.find();
   if (!item) {
     return res.send("Item not found");
   }
-  res.render("item_form", { title: "Update Item", item });
+  res.render("item_form", {
+    title: "Update Item",
+    item,
+    categories: categories,
+  });
 });
 
 // Handle item update on POST.
 exports.item_update_post = [
-  // Validation and sanitization
-  // ...
+  body("name", "Item name is required").trim().isLength({ min: 1 }).escape(),
+  body("description", "Item description is required")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("category", "Category is required").trim().isLength({ min: 1 }).escape(),
+  body("price", "Invalid price").isNumeric(),
+  body("numberInStock", "Invalid number in stock").isInt(),
   asyncHandler(async (req, res) => {
-    // Process request after validation and sanitization
-    // ...
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      // If there are errors, render the form again with the current inputs and errors
+      return res.render("item_form", {
+        title: "Update Item",
+        item: req.body,
+        errors: errors.array(),
+      });
+    }
+
+    // If no errors, proceed to update the item
+    const updatedItem = await Item.findByIdAndUpdate(
+      req.params.id,
+      {
+        name: req.body.name,
+        description: req.body.description,
+        category: req.body.category,
+        price: req.body.price,
+        numberInStock: req.body.numberInStock,
+        URL: req.body.URL,
+      },
+      { new: true }
+    );
+
+    if (!updatedItem) {
+      return res.send("Item not found");
+    }
+    res.redirect("/items/" + updatedItem._id);
   }),
 ];
 
