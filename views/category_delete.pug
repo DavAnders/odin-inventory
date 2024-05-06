@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1= title
+
+  if category
+    p Are you sure you want to delete the category '#{category.name}'?
+    form(action="/category/${category._id}/delete" method="POST")
+      input(type="hidden" name="categoryid" value=category._id)
+      button(type="submit") Delete
+  else
+    p Category not found

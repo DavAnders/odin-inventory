@@ -1,0 +1,18 @@
+extends layout
+
+block content
+
+  h1= title
+
+  if category
+    div
+      h2= category.name
+      p Description: #{category.description}
+      if category.URL
+        p URL: 
+          a(href=category.URL) #{category.URL}
+      else
+        p No URL provided.
+      a(href=category.url+'/delete') Delete Category
+  else
+    p No category details available.

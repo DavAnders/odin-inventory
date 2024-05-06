@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  h1= title
+
+  if errors
+    div
+      ul
+        each error in errors
+          li= error.msg
+
+  form(action="/category/create" method="POST")
+    div
+      label(for="name") Name:
+      input(type="text" id="name" name="name" required value=(category ? category.name : ''))
+    div
+      label(for="description") Description:
+      textarea(id="description" name="description" required)= (category ? category.description : '')
+    div
+      label(for="URL") URL (optional):
+      input(type="text" id="URL" name="URL" value=(category ? category.URL : ''))
+    button(type="submit") Create

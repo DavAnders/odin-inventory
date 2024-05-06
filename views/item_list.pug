@@ -1,0 +1,25 @@
+extends layout
+
+block content
+  h1= title
+
+  if items.length > 0
+    // Render list of items if there are any
+    ul
+      each item in items
+        li
+          h2= item.name
+          p= item.description
+          p= `Price: $${item.price}`
+          p= `Number in Stock: ${item.numberInStock}`
+          if item.URL
+            p
+              a(href=item.URL) Visit Website
+          else
+            p No URL provided.
+    
+    a(href='./items/create') Create Item
+  else
+    // Display a message if there are no items
+    p No items found.
+    a(href='./items/create') Create Item
